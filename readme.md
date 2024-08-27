@@ -129,7 +129,7 @@ Names the didn't work
 
 A name which did work was "ChatBot"
 
-![ChatBot was a good name for the model](../images/chatbot.jpg)
+![ChatBot was a good name for the model](../images/ChatBot.jpg)
 
 ## Hangs and Unresponsive Behavior
 If you are experiencing a hang or unresponsive behavior with the chat-bot using the "gpt-40" model, there could be several reasons for this:
