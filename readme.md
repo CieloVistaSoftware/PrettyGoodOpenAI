@@ -5,7 +5,7 @@ Many preceded OpenAI based chat-bot.
 
 This project zeros in on Azure's OpenAi ChatBot solution and how it's done in August/2024 using a console application.
 
-## Steaming
+## Streaming
 
 ```csharp
  static async Task Main(string[] args)
@@ -54,7 +54,7 @@ To use the APIKey and URL you must create an OpenAI Service in Azure
 
 ![OpenAI Service](./images/AzureOpenAI.jpg)
 
-Once the service is  created there will be KEYs and URL values found here under the Develop tab. Both keys work but only one is required.
+Once the service is  created, there will be KEYs and URL values found here under the Develop tab. Both keys work but only one is required.
 
 <img src="./images/AzureKeys.jpg" alt="Azure Keys location" width="600"/> 
 
@@ -129,7 +129,7 @@ Names the didn't work
 
 A name which did work was "ChatBot"
 
-![ChatBot was a good name for the model](../images/ChatBot.jpg)
+![ChatBot was a good name for the model](./images/ChatBot.jpg)
 
 ## Hangs and Unresponsive Behavior
 If you are experiencing a hang or unresponsive behavior with the chat-bot using the "gpt-40" model, there could be several reasons for this:
