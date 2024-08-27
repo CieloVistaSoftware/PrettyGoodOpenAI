@@ -1,27 +1,31 @@
 ﻿using Azure.AI.OpenAI;
 using Azure;
+using System.Diagnostics;
 
-namespace QuickOpenAi
+namespace PrettyGoodOpenAPI
 {
-    internal class Program
+    public class Program
     {
+        public static string AzureKeyCredential => Environment.GetEnvironmentVariable("AzureAPIKEY", EnvironmentVariableTarget.User).ToString();
+        public static string AzureDeployment => Environment.GetEnvironmentVariable("AzureDeployment", EnvironmentVariableTarget.User).ToString();
+        public static string AzureUri => Environment.GetEnvironmentVariable("AzureUrl", EnvironmentVariableTarget.User).ToString();
 
-        static async Task Main(string[] args)
+        private static async Task Main(string[] args)
         {
             Console.WriteLine("OpenAI Test");
-            await NonStreamingChat();
-            //await StreamingChat();
+            //await NonStreamingChat();
+            await StreamingChat();
         }
 
-        static async Task StreamingChat()
+        public static async Task StreamingChat()
         {
             OpenAIClient client = new OpenAIClient(
-                new Uri(uri),
-                new AzureKeyCredential(APIKEY));
-
+                new Uri(AzureUri),
+                new AzureKeyCredential(AzureKeyCredential));
+            // Debugger.Break();
             ChatCompletionsOptions options = new ChatCompletionsOptions()
             {
-                Messages = { new ChatMessage(ChatRole.System, @"You are an AI assistant that helps people find information.") },
+                Messages = { new ChatMessage(ChatRole.System, @"You are an AI assistant that helps people write code.") },
                 Temperature = (float)0.7,
                 MaxTokens = 800,
                 NucleusSamplingFactor = (float)0.95,
@@ -40,9 +44,10 @@ namespace QuickOpenAi
                 options.Messages.Add(new ChatMessage(ChatRole.User, line));
 
                 Console.WriteLine("Response:");
+                // The deployment name of the model to query. This is the name of the model you deployed to the Azure portal.
                 Response<StreamingChatCompletions> response =
                 await client.GetChatCompletionsStreamingAsync(
-                    deploymentOrModelName: deployment,
+                    deploymentOrModelName: AzureDeployment,
                     options);
 
                 using StreamingChatCompletions streamingChatCompletions = response.Value;
@@ -57,15 +62,14 @@ namespace QuickOpenAi
                     Console.WriteLine();
                 }
                 options.Messages.Add(new ChatMessage(ChatRole.Assistant, fullresponse));
-
             }
         }
 
-        static async Task NonStreamingChat()
+        public static async Task NonStreamingChat()
         {
             OpenAIClient client = new OpenAIClient(
-                new Uri(uri),
-                new AzureKeyCredential(APIKEY));
+                new Uri(AzureUri),
+                new AzureKeyCredential(AzureKeyCredential));
 
             ChatCompletionsOptions options = new ChatCompletionsOptions()
             {
@@ -90,28 +94,14 @@ namespace QuickOpenAi
                 Console.WriteLine("Response:");
                 Response<ChatCompletions> response =
                 await client.GetChatCompletionsAsync(
-                    deploymentOrModelName: deployment,
+                    deploymentOrModelName: AzureDeployment,
                     options);
 
-                ChatCompletions completions  = response.Value;
+                ChatCompletions completions = response.Value;
                 string fullresponse = completions.Choices[0].Message.Content;
                 Console.WriteLine(fullresponse);
                 options.Messages.Add(completions.Choices[0].Message);
-
             }
         }
-
-
-
-
-
-
-
-
-
-        public static readonly string APIKEY = "YOURKEY";
-        public static readonly string deployment = "YOURDEPLOYMENT";
-        public static readonly string uri = "https://YOURURI.openai.azure.com/";
-
     }
 }
